@@ -1,18 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
+import logo from '../logo.svg';
+import '../App.css';
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 import { useState } from 'react';
-import MainContent from './components/MainContent';
-import { db } from './utils/Firebase';
-import MainScreen from './components/MainScreen'
-import LoginScreen from './auth/LoginScreen'
-import RegisterScreen from './auth/RegisterScreen'
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-// import PublicRoute from './components/PublicRoute'
-// import PrivateRoute from './components/PrivateRoute';
+import MainContent from '../components/MainContent';
+import { db } from '../utils/Firebase';
 
-function App() {
+const MainScreen = () => {
     const [className, setClassName] = useState("")
     const [topicName, setTopicName] = useState("")
 
@@ -109,20 +103,16 @@ function App() {
         setGotData(true)
 
     }
-
     return (
+        <div className="">
+            <Navbar />
+            <div className="flex">
+                <Sidebar func={changeClass} />
+                <MainContent days={daysData} dayIds = {dayIds} gotData={gotData} homework={homework} extras={extras} className = {className} topicName={topicName}/>
+            </div>
 
-        
-        <BrowserRouter>
-            <Switch>
-                {/* <PrivateRoute exact path="/" component={MainScreen} />
-                <PublicRoute exact path="/login" restricted={true} component={LoginScreen} /> */}
-                <Route exact path="/home" component={MainScreen} />
-                <Route exact path="/" restricted={true} component={LoginScreen} />
-                <Route exact path="/register" component={RegisterScreen} />
-            </Switch>
-      </BrowserRouter>
-    );
+        </div>
+    )
 }
 
-export default App;
+export default MainScreen

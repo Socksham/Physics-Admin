@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import { auth, db } from '../../utils/Firebase'
-import { signInWithGoogle } from '../../utils/GoogleAuthProvider'
-import { UserContext } from '../../utils/providers/UserProvider'
+import { auth, db } from '../utils/Firebase'
+import { signInWithGoogle } from '../utils/GoogleAuthProvider'
+import { UserContext } from '../utils/providers/UserProvider'
 
 const RegisterScreen = ({ history }) => {
     const [email, setEmail] = useState("")

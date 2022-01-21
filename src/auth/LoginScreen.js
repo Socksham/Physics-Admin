@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
-import { auth, db } from '../../utils/Firebase'
-import { UserContext } from '../../utils/providers/UserProvider'
-import { signInWithGoogle } from '../../utils/GoogleAuthProvider'
+import { auth, db } from '../utils/Firebase'
+import { UserContext } from '../utils/providers/UserProvider'
+import { signInWithGoogle } from '../utils/GoogleAuthProvider'
 
 const LoginScreen = ({ history }) => {
     const [email, setEmail] = useState("")
@@ -12,6 +12,7 @@ const LoginScreen = ({ history }) => {
     const user = useContext(UserContext)
 
     const loginHandler = async (e) => {
+        console.log("1")
         loggedIn.current = true
         var userFromSignIn = await signInWithGoogle(false)
 
@@ -20,7 +21,7 @@ const LoginScreen = ({ history }) => {
         const exists = (await ref.get()).exists
 
         if (exists) {
-            history.push("/")
+            history.push("/home")
         } else {
             await ref.set({
                 email: userFromSignIn.email,
@@ -49,7 +50,7 @@ const LoginScreen = ({ history }) => {
                         authenticated: false
                     })
 
-                    history.push("/")
+                    history.push("/home")
                 }else{
                     if (user) {
                         console.log("HERE")
@@ -58,9 +59,10 @@ const LoginScreen = ({ history }) => {
                             const ref = await db.collection("users").doc(user.email).get()
                             console.log(user.email)
                             console.log(ref)
+                            console.log(ref.data())
                             if (ref.data().authenticated) {
                                 setIsDisabled(true)
-                                history.push("/")
+                                history.push("/home")
                             } else {
                                 history.push("/entercode")
         
@@ -115,7 +117,7 @@ const LoginScreen = ({ history }) => {
 
                     <div className="mt-6 rounded-md p-2 text-center shadow-md cursor-pointer bg-black text-white transition duration-300 ease-in-out hover:bg-glass hover:text-black w-96" onClick={() => { loginHandler() }}>
 
-                        <button className="text-lg" disabled={isDisabled}>Sign in with Google</button>
+                        <button onClick={() => loginHandler} className="text-lg" disabled={isDisabled}>Sign in with Google</button>
                     </div>
                 </div>
                 <div className="flex justify-center space-x-1 mt-4">

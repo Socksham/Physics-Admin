@@ -10,6 +10,9 @@ const Navbar = ({ history }) => {
 
                     <p className="text-xl">Admin</p>
             </div>
+            <div className="flex justify-center text-glass cursor-pointer" onClick={() => { window.location.href = physicURL+"/login" }}>
+                    <p className="font-bold text-xl">LOGIN</p>
+            </div>
         </div>
     )
 }
