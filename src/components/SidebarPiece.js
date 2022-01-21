@@ -16,20 +16,20 @@ const SidebarPiece = ({ name, func }) => {
     const [topicName, setTopicName] = useState("")
 
     useEffect(() => {
-        async function dafunc() {
-            const topics = await db.collection("class").doc(name).collection("topics").get()
-            topics.docs.forEach(doc => {
-                setTopics(old => [...old, doc.data().topicName])
-            })
-
-            // topics.docChanges((docSnapshot)=> {
-            //     setTopics(old => [...old, docSnapshot.data().topicName])
-            // })
-        }
-
-        dafunc()
+        topicHandler()
 
     }, [])
+
+    const topicHandler = () => {
+        db.collection("class").doc(name).collection("topics").onSnapshot((snapshot) => {
+            let arr = []
+            snapshot.docs.forEach(doc => {
+                arr.push(doc.data().topicName)
+            })
+        setTopics(arr)
+
+        })
+    }
 
     return (
         <div>

@@ -34,7 +34,6 @@ const TopicModal = ({ name, className, showHide, handleModalShowHide }) => {
                             topicName: document.getElementById("topicIdName").value,
                         })
                     }
-                    window.location.reload(true)
                 }}>
             Create
           </Button>

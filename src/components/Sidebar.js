@@ -30,9 +30,10 @@ const Sidebar = ({ func }) => {
     useEffect(() => {
         async function dafunc() {
             var arr = []
-            const docs = await db.collection("class").get()
-            docs.forEach((doc) => {
-                arr.push(doc.data().className)
+            db.collection("class").onSnapshot((snap) => {
+                snap.docs.forEach((doc) => {
+                    arr.push(doc.data().className)
+                })
             })
             // topics.docChanges((docSnapshot)=> {
             //     setTopics(old => [...old, docSnapshot.data().topicName])

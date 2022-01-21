@@ -284,7 +284,6 @@ const MainContent = ({ days, dayIds, gotData, homework, extras, className, topic
 
             }
 
-            window.location.reload()
             handleModalShowHide(!showHide)
           }}>
 

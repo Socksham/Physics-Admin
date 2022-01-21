@@ -56,7 +56,7 @@ const LoginScreen = ({ history }) => {
                         console.log("HERE")
                         console.log(loggedIn.current)
                         if (!loggedIn.current) {
-                            const ref = await db.collection("users").doc(user.email).get()
+                            const ref = await db.collection("users").doc(user.user.email).get()
                             console.log(user.email)
                             console.log(ref)
                             console.log(ref.data())

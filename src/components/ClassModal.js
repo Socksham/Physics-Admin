@@ -32,7 +32,6 @@ const ClassModal = ({ name, showHide, handleModalShowHide }) => {
                             className: document.getElementById("classIdName").value,
                         })
                     }
-                    window.location.reload(true)
                 }}>
                     Create
                 </Button>
