@@ -28,23 +28,34 @@ const Sidebar = ({ func }) => {
 
 
     useEffect(() => {
-        async function dafunc() {
-            var arr = []
-            db.collection("class").onSnapshot((snap) => {
-                snap.docs.forEach((doc) => {
-                    arr.push(doc.data().className)
-                })
-            })
-            // topics.docChanges((docSnapshot)=> {
-            //     setTopics(old => [...old, docSnapshot.data().topicName])
-            // })
-            setData(arr)
-        }
-        dafunc()
-        func()
+        // async function dafunc() {
+        //     var arr = []
+        //     db.collection("class").onSnapshot((snap) => {
+        //         snap.docs.forEach((doc) => {
+        //             arr.push(doc.data().className)
+        //         })
+        //     })
+        //     // topics.docChanges((docSnapshot)=> {
+        //     //     setTopics(old => [...old, docSnapshot.data().topicName])
+        //     // })
+        //     setData(arr)
+        // }
+        topicHandler()
+        // dafunc()
+        // func()
 
     }, [])
 
+    const topicHandler = () => {
+        db.collection("class").onSnapshot((snapshot) => {
+            let arr = []
+            snapshot.docs.forEach(doc => {
+                arr.push(doc.data().className)
+            })
+            setData(arr)
+
+        })
+    }
    
 
     return (

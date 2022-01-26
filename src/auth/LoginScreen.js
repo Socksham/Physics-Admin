@@ -13,25 +13,27 @@ const LoginScreen = ({ history }) => {
 
     const loginHandler = async (e) => {
         console.log("1")
-        loggedIn.current = true
-        var userFromSignIn = await signInWithGoogle(false)
+        await setEmail(document.getElementById("emailtxt").value)
+        await setPassword(document.getElementById("pwtxt").value)
+        console.log(document.getElementById("emailtxt").value)
+        console.log(password)
 
-        console.log(userFromSignIn)
-        const ref = db.collection("users").doc(userFromSignIn.email)
-        const exists = (await ref.get()).exists
+        await auth.signInWithEmailAndPassword(email, password)
 
-        if (exists) {
-            history.push("/home")
-        } else {
-            await ref.set({
-                email: userFromSignIn.email,
-                authenticated: false,
-            })
-            history.push("/entercode")
+        if(auth.currentUser){
+
         }
 
 
     }
+
+    useEffect(() => {
+        auth.onAuthStateChanged((user) => {
+            if(user){
+                history.push("/home")
+            }
+        })
+    }, [])
 
     useEffect(() => {
         async function func() {
@@ -115,10 +117,13 @@ const LoginScreen = ({ history }) => {
                         </div>
                     }
 
-                    <div className="mt-6 rounded-md p-2 text-center shadow-md cursor-pointer bg-black text-white transition duration-300 ease-in-out hover:bg-glass hover:text-black w-96" onClick={() => { loginHandler() }}>
+                    {/* <div className="mt-6 rounded-md p-2 text-center shadow-md cursor-pointer bg-black text-white transition duration-300 ease-in-out hover:bg-glass hover:text-black w-96" onClick={() => { loginHandler() }}>
 
                         <button onClick={() => loginHandler} className="text-lg" disabled={isDisabled}>Sign in with Google</button>
-                    </div>
+                    </div> */}
+                    <input id="emailtxt" type="text" onChange={async (e) => {await setEmail(e)}}/>
+                    <input id="pwtxt" type="password" onChange={async (e) => {await setPassword(e)}}/>
+                    <button onClick={loginHandler} className="text-lg" >Sign in with Google</button>
                 </div>
                 <div className="flex justify-center space-x-1 mt-4">
                     <p>Don't have an account?</p>

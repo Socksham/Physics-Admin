@@ -18,6 +18,8 @@ const SidebarPiece = ({ name, func }) => {
     useEffect(() => {
         topicHandler()
 
+        // func()
+
     }, [])
 
     const topicHandler = () => {
