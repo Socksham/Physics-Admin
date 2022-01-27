@@ -1,8 +1,10 @@
 import { db } from '../utils/Firebase';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import firebase from 'firebase'
 
-const ClassModal = ({ name, showHide, handleModalShowHide }) => {
+
+const ClassModal = ({ name, showHide, handleModalShowHide, cHandler }) => {
 
     // const firestore = db.firestore();
 
@@ -30,7 +32,9 @@ const ClassModal = ({ name, showHide, handleModalShowHide }) => {
                     if (!(document.getElementById("classIdName").value == "")) {
                         await db.collection("class").doc(document.getElementById("classIdName").value).set({
                             className: document.getElementById("classIdName").value,
+                            timestamp: firebase.firestore.Timestamp.now()
                         })
+                        cHandler()
                     }
                 }}>
                     Create

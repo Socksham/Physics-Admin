@@ -3,8 +3,10 @@ import { useState } from 'react'
 import { db } from '../utils/Firebase';
 import {Modal, Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import firebase from 'firebase'
 
-const TopicModal = ({ name, className, showHide, handleModalShowHide }) => {
+
+const TopicModal = ({ name, className, showHide, handleModalShowHide, tHandler}) => {
   const [active, setActive] = React.useState(false);
 
   function handleActivation(e) {
@@ -32,7 +34,9 @@ const TopicModal = ({ name, className, showHide, handleModalShowHide }) => {
                     if (!(document.getElementById("topicIdName").value == "")) {
                         await db.collection("class").doc(className).collection("topics").doc(document.getElementById("topicIdName").value).set({
                             topicName: document.getElementById("topicIdName").value,
+                            timestamp: firebase.firestore.Timestamp.now()
                         })
+                        tHandler()
                     }
                 }}>
             Create

@@ -22,8 +22,8 @@ const SidebarPiece = ({ name, func }) => {
 
     }, [])
 
-    const topicHandler = () => {
-        db.collection("class").doc(name).collection("topics").onSnapshot((snapshot) => {
+    const topicHandler = async () => {
+        await db.collection("class").doc(name).collection("topics").orderBy('timestamp', 'asc').get().then((snapshot) => {
             let arr = []
             snapshot.docs.forEach(doc => {
                 arr.push(doc.data().topicName)
@@ -37,7 +37,7 @@ const SidebarPiece = ({ name, func }) => {
         <div>
 
 
-            <TopicModal name="" className={name} showHide={showHide} handleModalShowHide={handleModalShowHide} />
+            <TopicModal name="" className={name} showHide={showHide} handleModalShowHide={handleModalShowHide} tHandler={topicHandler}/>
 
             <div className="w-48 h-16 hover:bg-white  animate-fade-in-down hover:text-black transition duration-500 select-none	ease-in-out cursor-pointer border-b-2 border-gray-700">
                 <div className="flex h-full ">

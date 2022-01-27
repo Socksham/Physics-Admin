@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { unmountComponentAtNode } from 'react-dom'
 import App from '../App'
 
-const MainContent = ({ days, dayIds, gotData, homework, extras, className, topicName }) => {
+const MainContent = ({ days, dayIds, gotData, homework, extras, className, topicName, func }) => {
 
 
   const [showHide, handleModalShowHide] = useState(false)
@@ -283,7 +283,7 @@ const MainContent = ({ days, dayIds, gotData, homework, extras, className, topic
               }
 
             }
-
+            func(topicName, className)
             handleModalShowHide(!showHide)
           }}>
 
@@ -296,7 +296,7 @@ const MainContent = ({ days, dayIds, gotData, homework, extras, className, topic
 
       <div className="lg:pl-10 lg:pr-10 md:pl-10 md:pr-10 pl-10 pr-10 mt-6">
         <div className="mb-8">
-          <p className="text-3xl font-semibold">Days</p>
+          <p className="text-3xl font-semibold">{className}/{topicName}</p>
         </div>
         {
           gotData ?

@@ -35,72 +35,72 @@ const LoginScreen = ({ history }) => {
         })
     }, [])
 
-    useEffect(() => {
-        async function func() {
-            await auth.getRedirectResult().then(async function (result) {
-                // The firebase.User instance:
-                console.log("STILL CHECKS HERE")
-                var userFromSignIn = result.user;
+    // useEffect(() => {
+    //     async function func() {
+    //         await auth.getRedirectResult().then(async function (result) {
+    //             // The firebase.User instance:
+    //             console.log("STILL CHECKS HERE")
+    //             var userFromSignIn = result.user;
                 
-                if(userFromSignIn !== null){
-                    console.log("LOGIN HANDLER")
-                    console.log(userFromSignIn)
-                    loggedIn.current = true
+    //             if(userFromSignIn !== null){
+    //                 console.log("LOGIN HANDLER")
+    //                 console.log(userFromSignIn)
+    //                 loggedIn.current = true
 
-                    db.collection("users").doc(userFromSignIn.email).set({
-                        email: userFromSignIn.email,
-                        authenticated: false
-                    })
+    //                 db.collection("users").doc(userFromSignIn.email).set({
+    //                     email: userFromSignIn.email,
+    //                     authenticated: false
+    //                 })
 
-                    history.push("/home")
-                }else{
-                    if (user) {
-                        console.log("HERE")
-                        console.log(loggedIn.current)
-                        if (!loggedIn.current) {
-                            const ref = await db.collection("users").doc(user.user.email).get()
-                            console.log(user.email)
-                            console.log(ref)
-                            console.log(ref.data())
-                            if (ref.data().authenticated) {
-                                setIsDisabled(true)
-                                history.push("/home")
-                            } else {
-                                history.push("/entercode")
+    //                 history.push("/home")
+    //             }else{
+    //                 if (user) {
+    //                     console.log("HERE")
+    //                     console.log(loggedIn.current)
+    //                     if (!loggedIn.current) {
+    //                         const ref = await db.collection("users").doc(user.user.email).get()
+    //                         console.log(user.email)
+    //                         console.log(ref)
+    //                         console.log(ref.data())
+    //                         if (ref.data().authenticated) {
+    //                             setIsDisabled(true)
+    //                             history.push("/home")
+    //                         } else {
+    //                             history.push("/entercode")
         
-                            }
-                            console.log(user)
-                        }
+    //                         }
+    //                         console.log(user)
+    //                     }
         
-                    } else {
-                        console.log("HUH")
-                        setIsDisabled(false)
-                    }
-                }
+    //                 } else {
+    //                     console.log("HUH")
+    //                     setIsDisabled(false)
+    //                 }
+    //             }
                 
-            }, function (error) {
-                // The provider's account email, can be used in case of
-                // auth/account-exists-with-different-credential to fetch the providers
-                // linked to the email:
-                var email = error.email;
-                // The provider's credential:
-                var credential = error.credential;
-                console.log("ERRORs")
-                // In case of auth/account-exists-with-different-credential error,
-                // you can fetch the providers using this:
-                if (error.code === 'auth/account-exists-with-different-credential') {
-                    auth.fetchSignInMethodsForEmail(email).then(function (providers) {
-                        // The returned 'providers' is a list of the available providers
-                        // linked to the email address. Please refer to the guide for a more
-                        // complete explanation on how to recover from this error.
-                    });
-                }
-            });
-        }
+    //         }, function (error) {
+    //             // The provider's account email, can be used in case of
+    //             // auth/account-exists-with-different-credential to fetch the providers
+    //             // linked to the email:
+    //             var email = error.email;
+    //             // The provider's credential:
+    //             var credential = error.credential;
+    //             console.log("ERRORs")
+    //             // In case of auth/account-exists-with-different-credential error,
+    //             // you can fetch the providers using this:
+    //             if (error.code === 'auth/account-exists-with-different-credential') {
+    //                 auth.fetchSignInMethodsForEmail(email).then(function (providers) {
+    //                     // The returned 'providers' is a list of the available providers
+    //                     // linked to the email address. Please refer to the guide for a more
+    //                     // complete explanation on how to recover from this error.
+    //                 });
+    //             }
+    //         });
+    //     }
 
-        func()
+    //     func()
 
-    }, [user])
+    // }, [user])
 
     return (
         <div className="flex bg-glass h-screen">

@@ -40,14 +40,14 @@ const Sidebar = ({ func }) => {
         //     // })
         //     setData(arr)
         // }
-        topicHandler()
+        classHandler()
         // dafunc()
         // func()
 
     }, [])
 
-    const topicHandler = () => {
-        db.collection("class").onSnapshot((snapshot) => {
+    const classHandler = async () => {
+        await db.collection("class").orderBy('timestamp','asc').get().then((snapshot) => {
             let arr = []
             snapshot.docs.forEach(doc => {
                 arr.push(doc.data().className)
@@ -64,7 +64,7 @@ const Sidebar = ({ func }) => {
 
                 <div>
 
-                    <ClassModal name = {className} showHide = {showHide} handleModalShowHide = {handleModalShowHide}/>
+                    <ClassModal name = {className} showHide = {showHide} handleModalShowHide = {handleModalShowHide} cHandler={classHandler}/>
                     
                     <div className="h-screen bg-black text-glass w-48">
 
