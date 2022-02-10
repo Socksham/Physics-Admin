@@ -223,15 +223,16 @@ const MainContent = ({ days, dayIds, gotData, homework, extras, className, topic
             var ref = db.collection("class").doc(className).collection("topics").doc(topicName).collection("days");
             if (currKey === "None") {//new day
 
-              await ref.add({
+              await ref.doc(dayNum).set({
                 "dayName": dayName,
                 "dayNum": dayNum
               }).then(async function (docRef) {
+                
                 //hw
                 if (hwList.length > 0) {
                   // await docRef.collection("homework").get()
                   for (var i = 0; i < hwList.length; i++) {
-                    await docRef.collection("homework").add({
+                    await ref.doc(dayNum).collection("homework").add({
                       "name": document.getElementById("hwName" + i).value,
                       "link": document.getElementById("hwLink" + i).value,
                     })
@@ -240,7 +241,7 @@ const MainContent = ({ days, dayIds, gotData, homework, extras, className, topic
                 //extra
                 if (extList.length > 0) {
                   for (var i = 0; i < extList.length; i++) {
-                    await docRef.collection("extras").add({
+                    await ref.doc(dayNum).collection("extras").add({
                       "name": document.getElementById("extName" + i).value,
                       "link": document.getElementById("extLink" + i).value,
                     })
