@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { db } from '../utils/Firebase'
+import { db, storage } from '../utils/Firebase'
 import DayCard from './DayCard'
 import DayCardLoader from './DayCardLoader'
 import NewDayCard from './NewDayCard'
@@ -21,8 +21,58 @@ const MainContent = ({ days, dayIds, gotData, homework, extras, className, topic
   const [dayName, setDayName] = useState("")
   const [dayNum, setDayNum] = useState("")
 
+  const [uploadFile, setUploadFile] = useState("")
 
+  function uploadDocument(files, listIndex){
 
+    //https://firebase.google.com/docs/storage/web/upload-files
+
+    if (files.length != 0) {
+      //create a storage reference
+      var fbstorage = storage.ref(files.name);
+      //upload document into specified storage
+      var upload = fbstorage.put(files);
+
+      upload.on('state_changed', 
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+          }
+        }, 
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error+": Please Try Again")
+        }, 
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          var success = false
+            
+          fbstorage.getDownloadURL().then(function(url) {
+            console.log(url);
+            success = true
+            document.getElementById("hwLink"+listIndex).value = url
+          })
+          .catch(function(error) {
+            console.log("error encountered");
+            success = false
+          });
+          
+        }
+      );
+      
+    }
+    
+  }
 
   async function showModal(val) {
     // alert(val)
@@ -113,6 +163,17 @@ const MainContent = ({ days, dayIds, gotData, homework, extras, className, topic
                   <div key = {i} id={"hw" + i}>
                     <input id={"hwName" + i} type="text" placeholder="HW Name" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full" defaultValue={doc.name} />
                     <input id={"hwLink" + i} type="text" placeholder="HW Link" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full" defaultValue={doc.link} />
+                    <Button variant="primary" id="files" type="file" onClick={() => {
+                      var input = document.createElement('input');
+                      var files = []
+                      input.type = 'file';
+                      input.onchange = e => { 
+                        files = e.target.files[0];
+                        uploadDocument(files, i)
+                        console.log(uploadFile)
+                      }
+                      input.click();
+                    }}>Upload Document</Button>
                     <Button variant="danger" onClick={async () => {
                       //handleModalShowHide(!showHide)
                       // alert(hwList.toString())
